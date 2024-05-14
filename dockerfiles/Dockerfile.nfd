@@ -1,0 +1,65 @@
+FROM ubuntu:focal
+
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get upgrade --yes && DEBIAN_FRONTEND=noninteractive apt-get install --yes \
+    tzdata \
+    build-essential \
+    psmisc \
+    net-tools \
+    bc \
+    iputils-ping \
+    iptables \
+    vim \
+    iperf3 \
+    iproute2 \
+    libconfig++9v5 \
+    pkg-config \
+    ncurses-dev \
+    libncurses5-dev \
+    git \
+    curl \
+    libcurl4-openssl-dev \
+    gpg \
+    wget \
+    ninja-build \
+    libgtest-dev \
+    nlohmann-json3-dev \
+    libpcap-dev \ 
+	libsystemd-dev \
+    software-properties-common \ 
+	python3-minimal \
+    libboost-all-dev \
+    libssl-dev \
+	libsqlite3-dev \
+  && rm -rf /var/lib/apt/lists/*
+
+
+# Install ndn-cxx
+WORKDIR /tmp
+RUN git clone --recursive https://github.com/named-data/ndn-cxx.git
+
+WORKDIR /tmp/ndn-cxx
+RUN ./waf configure
+RUN ./waf
+RUN ./waf install
+
+# Install NFD
+WORKDIR /tmp
+RUN git clone --recursive https://github.com/named-data/NFD.git
+
+WORKDIR /tmp/NFD
+RUN ./waf configure
+RUN ./waf
+RUN ./waf install
+
+# Load the sample configuration
+WORKDIR /usr/local/etc/ndn
+RUN cp nfd.conf.sample nfd.conf
+
+# Link ndn-cxx shared object libraries with the NFD
+RUN ldconfig
+
+WORKDIR /
+
+# Run NFD directly without using nfd-start script that depends on systemd
+CMD ["nfd", "--config", "/usr/local/etc/ndn/nfd.conf"]
+#CMD ["sleep", "infinity"]

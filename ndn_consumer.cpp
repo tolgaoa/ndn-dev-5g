@@ -5,6 +5,17 @@
 
 class Consumer {
 public:
+	/*
+    Consumer()
+    : face_("nfd-service")  // Specify NFD service hostname
+    {}
+	*/
+    
+	Consumer()
+    : face_()
+    {}
+
+
     void run() {
         ndn::Name interestName("/ndn/testApp");
         ndn::Interest interest(interestName);
@@ -13,9 +24,9 @@ public:
 
         std::cout << "Sending Interest: " << interest << std::endl;
         face_.expressInterest(interest,
-                              bind(&Consumer::onData, this, _1, _2),
-                              bind(&Consumer::onNack, this, _1, _2),
-                              bind(&Consumer::onTimeout, this, _1));
+                              std::bind(&Consumer::onData, this, std::placeholders::_1, std::placeholders::_2),
+                              std::bind(&Consumer::onNack, this, std::placeholders::_1, std::placeholders::_2),
+                              std::bind(&Consumer::onTimeout, this, std::placeholders::_1));
 
         // Process events until the application is stopped
         face_.processEvents();
@@ -43,4 +54,5 @@ int main() {
     consumer.run();
     return 0;
 }
+
 

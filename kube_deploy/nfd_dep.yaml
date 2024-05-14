@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nfd-service
+spec:
+  ports:
+  - port: 6363
+    targetPort: 6363
+  selector:
+    app: nfd
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nfd-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nfd
+  template:
+    metadata:
+      labels:
+        app: nfd
+    spec:
+      containers:
+      - name: nfd
+        image: tolgaomeratalay/nfd:v1.4
+        ports:
+        - containerPort: 6363

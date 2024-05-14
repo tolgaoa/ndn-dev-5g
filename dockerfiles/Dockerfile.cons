@@ -1,0 +1,14 @@
+FROM ubuntu:focal
+
+RUN apt-get update && apt-get install -y software-properties-common
+RUN add-apt-repository ppa:named-data/ppa
+RUN apt-get update && apt-get install -y g++ ndn-cxx libndn-cxx-dev
+
+# Copy producer code into the container
+COPY ndn_consumer.cpp /ndn_consumer.cpp
+
+# Compile the producer application
+RUN g++ /ndn_consumer.cpp -o /ndn_consumer -std=c++17 -lndn-cxx
+
+# Run the consumer
+CMD ["sleep", "infinity"]
