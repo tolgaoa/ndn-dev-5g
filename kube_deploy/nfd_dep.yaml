@@ -25,6 +25,6 @@ spec:
     spec:
       containers:
       - name: nfd
-        image: tolgaomeratalay/nfd:v1.4
+        image: tolgaomeratalay/nfd:v1.8
         ports:
         - containerPort: 6363

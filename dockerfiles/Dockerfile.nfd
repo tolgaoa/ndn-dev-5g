@@ -53,7 +53,7 @@ RUN ./waf install
 
 # Load the sample configuration
 WORKDIR /usr/local/etc/ndn
-RUN cp nfd.conf.sample nfd.conf
+COPY ./nfd.conf /usr/local/etc/bin/nfd.conf
 
 # Link ndn-cxx shared object libraries with the NFD
 RUN ldconfig
@@ -61,5 +61,5 @@ RUN ldconfig
 WORKDIR /
 
 # Run NFD directly without using nfd-start script that depends on systemd
-CMD ["nfd", "--config", "/usr/local/etc/ndn/nfd.conf"]
-#CMD ["sleep", "infinity"]
+#CMD ["nfd", "--config", "/usr/local/etc/ndn/nfd.conf"]
+CMD ["sleep", "infinity"]
