@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: proxy-service 
+spec:
+  ports:
+  - port: 
+    targetPort: 11095
+  selector:
+    app: app1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app1-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app1
+  template:
+    metadata:
+      labels:
+        app: app1
+    spec:
+      initContainers:
+      - name: init-networking
+        image: tolgaomeratalay/init-networking:v5
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+          privileged: true
+      containers:
+      - name: application
+        image: tolgaomeratalay/simpleclient:v1
+      - name: proxy
+        image: tolgaomeratalay/httpproxy:v1
+        ports:
+        - containerPort: 11095
