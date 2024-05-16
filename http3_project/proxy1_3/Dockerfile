@@ -14,7 +14,7 @@ COPY ./ /proxy/src/
 WORKDIR /proxy/src/
 RUN make build
 
-RUN adduser proxyop -u 1005 --gecos "proxy op, , , " --disabled-password
+RUN adduser proxyop -u 1005 --gecos "proxyop, , , " --disabled-password
 #RUN chown proxyop:proxyop /tmp/streamsa/src
 #RUN chmod -R u+w /streamsa/src
 
@@ -24,5 +24,5 @@ ENV PATH="$PATH:/usr/local/go/bin"
 WORKDIR /proxy/src/
 
 #ENTRYPOINT [ "su", "proxyop", "/bin/bash", "-l", "-c" ]
-CMD ["su", "proxyop", "-c", "./bin/proxyapp"]
+CMD ["su", "proxyop", "-c", "./bin/proxy"]
 #CMD ["sleep", "infinity"]

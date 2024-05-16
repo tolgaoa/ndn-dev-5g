@@ -1,11 +1,22 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: proxy-service 
+  name: proxy-service-http1
 spec:
   ports:
-  - port: 
+  - port: 8080
     targetPort: 11095
+  selector:
+    app: app1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: proxy-service-http3
+spec:
+  ports:
+  - port: 443
+    targetPort: 11096
   selector:
     app: app1
 ---
@@ -25,7 +36,7 @@ spec:
     spec:
       initContainers:
       - name: init-networking
-        image: tolgaomeratalay/init-networking:v5
+        image: tolgaomeratalay/init:1.1
         securityContext:
           capabilities:
             add:
@@ -33,8 +44,13 @@ spec:
           privileged: true
       containers:
       - name: application
-        image: tolgaomeratalay/simpleclient:v1
+        image: tolgaomeratalay/http1server:1.0
       - name: proxy
-        image: tolgaomeratalay/httpproxy:v1
+        image: tolgaomeratalay/httpproxy:1.2
         ports:
         - containerPort: 11095
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+          privileged: true

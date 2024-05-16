@@ -12,7 +12,7 @@ func main() {
         log.Printf("Handled request on path: %s", r.URL.Path)
     })
 
-    log.Println("Starting HTTP/1 server on :8082...")
+    log.Println("Starting HTTP/1 server on :8082")
     log.Fatal(http.ListenAndServe(":8082", nil))
 }
 

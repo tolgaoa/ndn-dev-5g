@@ -3,16 +3,16 @@
 SRC_DIR := ./cmd
 
 # Set the name of the Go module
-MODULE_NAME := proxy1_3
+MODULE_NAME := proxy
 
 build:
-	go build -o ./bin/proxy1_3 $(SRC_DIR)/main.go
+	go build -o ./bin/proxy $(SRC_DIR)/main.go
 
 # Run "make image VERSION=x.x.x"
 image:
-	docker build . -t tolgaomeratalay/httpproxy1_3:$(VERSION)
+	docker build . -t tolgaomeratalay/httpproxy:$(VERSION)
 push:
-	docker push tolgaomeratalay/httpproxy1_3:$(VERSION)
+	docker push tolgaomeratalay/httpproxy:$(VERSION)
 
 run:
 	go run $(SRC_DIR)/main.go
@@ -21,6 +21,6 @@ deps:
 	go mod download
 
 clean:
-	rm -f ./bin/proxy1_3
+	rm -f ./bin/proxy
 
 .PHONY: build run deps clean

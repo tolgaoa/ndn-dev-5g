@@ -63,6 +63,6 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 func main() {
 	fmt.Printf("Starting the HTTP1 server")
 	http.HandleFunc("/", handleRequest)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":11095", nil))
 }
 
