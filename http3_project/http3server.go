@@ -33,7 +33,10 @@ func main() {
 }
 
 func handleRequest(w http.ResponseWriter, r *http.Request) {
-    w.Write([]byte("Received over HTTP/3: " + r.URL.Path))
+    fmt.Printf("Received request at HTTP/3 server: %s %s\n", r.Method, r.URL.Path)
+    response := "Received over HTTP/3: " + r.URL.Path
+    w.Write([]byte(response))
+    fmt.Printf("Responded with: %s\n", response)
 }
 
 func mustLoadCertificate() tls.Certificate {

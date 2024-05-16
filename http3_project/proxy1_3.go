@@ -5,6 +5,7 @@ import (
 	"crypto/tls"
 	"io/ioutil"
 	"log"
+	"fmt"
 	"net/http"
 
 	quic "github.com/quic-go/quic-go/http3"
@@ -12,6 +13,8 @@ import (
 
 // sendHTTP3Request sends an HTTP/1 request as HTTP/3 to the specified destination server.
 func sendHTTP3Request(http1Req *http.Request) ([]byte, int, error) {
+
+	fmt.Printf("Proxy forwarding request: %s %s\n", http1Req.Method, http1Req.URL.String())
     client := &http.Client{
         Transport: &quic.RoundTripper{
             TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, // For development only
@@ -36,21 +39,21 @@ func sendHTTP3Request(http1Req *http.Request) ([]byte, int, error) {
         return nil, 0, err
     }
 
+	fmt.Printf("Proxy received status: %d with body length: %d\n", resp.StatusCode, len(body))
     return body, resp.StatusCode, nil
 }
 
 func handleRequest(w http.ResponseWriter, r *http.Request) {
+    fmt.Printf("Proxy received request: %s %s\n", r.Method, r.URL.Path)
     body, statusCode, err := sendHTTP3Request(r)
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
+        fmt.Printf("Proxy encountered an error: %v\n", err)
         return
     }
-
     w.WriteHeader(statusCode)
-    _, err = w.Write(body)
-    if err != nil {
-        log.Printf("Error writing response: %v", err)
-    }
+    w.Write(body)
+    fmt.Printf("Proxy responded with status: %d\n", statusCode)
 }
 
 
