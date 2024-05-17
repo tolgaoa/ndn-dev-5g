@@ -24,7 +24,7 @@ func sendHTTP3Request(http1Req *http.Request) ([]byte, int, error) {
     }
 
     reqBody, _ := ioutil.ReadAll(http1Req.Body)
-    req, err := http.NewRequest(http1Req.Method, "https://localhost:8443"+http1Req.URL.String(), bytes.NewReader(reqBody))
+    req, err := http.NewRequest(http1Req.Method, "https://localhost:8080"+http1Req.URL.String(), bytes.NewReader(reqBody))
     if err != nil {
         return nil, 0, err
     }

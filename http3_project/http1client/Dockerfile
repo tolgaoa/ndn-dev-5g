@@ -8,17 +8,9 @@ RUN tar -C /usr/local -xzf go1.22.3.linux-amd64.tar.gz && rm go1.22.3.linux-amd6
 
 ENV PATH="$PATH:/usr/local/go/bin"
 
-COPY ./ /proxy/src/
-WORKDIR /proxy/src/
+COPY ./ /client/src/
+WORKDIR /client/src/
 RUN make build
-
-RUN adduser --disabled-password --gecos '' --uid 1005 proxyop
-
-USER proxyop
-
-ENV PATH="$PATH:/usr/local/go/bin"
-
-WORKDIR /proxy/src/
 
 # Specify the command to run your application.
 #CMD ["./bin/proxy"]

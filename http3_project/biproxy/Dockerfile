@@ -21,6 +21,6 @@ ENV PATH="$PATH:/usr/local/go/bin"
 WORKDIR /proxy/src/
 
 # Specify the command to run your application.
-#CMD ["./bin/proxy"]
-CMD ["sleep", "infinity"]
+CMD ["./bin/proxy"]
+#CMD ["sleep", "infinity"]
 

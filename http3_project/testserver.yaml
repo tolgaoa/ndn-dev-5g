@@ -15,7 +15,7 @@ metadata:
   name: proxy-service-http3
 spec:
   ports:
-  - port: 443
+  - port: 8443
     targetPort: 11096
   selector:
     app: app1
@@ -36,7 +36,7 @@ spec:
     spec:
       initContainers:
       - name: init-networking
-        image: tolgaomeratalay/init:1.1
+        image: tolgaomeratalay/init:1.2
         securityContext:
           capabilities:
             add:
@@ -44,9 +44,15 @@ spec:
           privileged: true
       containers:
       - name: application
-        image: tolgaomeratalay/http1server:1.0
+        image: tolgaomeratalay/http1server:1.4
+        #command:
+        #  - /bin/sleep
+        #  - infinity
       - name: proxy
-        image: tolgaomeratalay/httpproxy:1.3
+        image: tolgaomeratalay/biproxy:1.8
+        #command:
+        #  - /bin/sleep
+        #  - infinity
         ports:
         - containerPort: 11095
         securityContext:
