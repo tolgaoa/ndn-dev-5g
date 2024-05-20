@@ -36,7 +36,7 @@ spec:
     spec:
       initContainers:
       - name: init-networking
-        image: tolgaomeratalay/init:1.2
+        image: tolgaomeratalay/init:1.3
         securityContext:
           capabilities:
             add:
@@ -46,7 +46,7 @@ spec:
       - name: application
         image: tolgaomeratalay/http1client:1.0
       - name: proxy
-        image: tolgaomeratalay/biproxy:1.8
+        image: tolgaomeratalay/biproxy:2.3
         #command:
         #  - /bin/sleep
         #  - infinity

@@ -102,15 +102,15 @@ func constructTargetURL(req *http.Request) string {
         u.Host = "default-server:8443"
     }
 
-    // Adjust the port to 8443 if the original is 8080, regardless of the IP
+    // Adjust the port to 8443 if the original is 80, regardless of the IP
     host, port, err := net.SplitHostPort(u.Host)
     if err != nil {
         // If there's no port in the host, or it's malformed, assume the default
         host = u.Host
-        port = "8080" // Assume it was the default HTTP/1 port if missing
+        port = "80" // Assume it was the default HTTP/1 port if missing
     }
 
-    if port == "8080" {
+    if port == "80" {
         port = "8443" // Switch to the HTTP/3 port
     }
 
@@ -159,7 +159,7 @@ func forwardRequestToHTTP1(r *http.Request) (*http.Response, error) {
     client := &http.Client{}
 
     // Construct a fully qualified URL for forwarding the request
-    forwardedURL := fmt.Sprintf("http://localhost:8080%s", r.URL.Path)  // Adjust the hostname and port as needed
+    forwardedURL := fmt.Sprintf("http://localhost:80%s", r.URL.Path)  // Adjust the hostname and port as needed
     log.Printf("Forwarding HTTP/3 request to HTTP/1: %s %s\n", r.Method, forwardedURL)
 
     reqBody, _ := ioutil.ReadAll(r.Body)
@@ -198,4 +198,3 @@ func mustLoadCertificate() tls.Certificate {
     }
     return cert
 }
-
