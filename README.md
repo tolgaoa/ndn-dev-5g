@@ -1,5 +1,7 @@
-# 5G-NDN Integration Development 
+# 5G-Service Mesh Proxy Development and Integration
 
-The goal of this project is to eventually integrate the NDN routing with the 5G core
+The goal of this project is to experiment with different Side Car Proxies by integrating HTTP1, HTTP2, HTTP3, NDN, etc, forwarding strategies with the 5G core VNFs.
 
-Also a golang proxy is used to convert HTTP1 messages from the 5G core to add OAuth 2.0 tokens, TLS encapsulation and HTTP2/HTTP3 conversion for comparing in cloud deployments.
+## Stable Versions
+### biproxy - HTTP \<-\> -HTTP1: tolgaomeratalay/biproxy:2.6
+### init-container: tolgaomeratalay/init:1.3

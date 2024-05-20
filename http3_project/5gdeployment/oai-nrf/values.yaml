@@ -15,7 +15,7 @@ tcpdumpimage:
 
 proxyimage:
   repository: tolgaomeratalay/biproxy
-  saversion: 2.3
+  saversion: 2.6
   pullPolicy: IfNotPresent
 
 ## good to use when pulling images from docker-hub mention 

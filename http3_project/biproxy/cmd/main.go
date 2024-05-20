@@ -44,7 +44,7 @@ func sendHTTP3Request(http1Req *http.Request) ([]byte, int, error) {
     }
 
     // Construct the URL for the HTTP/3 request
-    targetURL := constructTargetURL(http1Req)
+    targetURL := constructTargetURL(http1Req, true)
 
     log.Printf("Sending HTTP/3 request to URL: %s with method: %s\n", targetURL, http1Req.Method)
 
@@ -89,37 +89,34 @@ func sendHTTP3Request(http1Req *http.Request) ([]byte, int, error) {
     return body, resp.StatusCode, nil
 }
 
-func constructTargetURL(req *http.Request) string {
-    // Ensure the URL has the HTTPS scheme required for HTTP/3
+func constructTargetURL(req *http.Request, toHTTP3 bool) string {
+    // Ensure the URL has the appropriate scheme and port
     u := *req.URL
-    u.Scheme = "https"
-
-    // Parse the host from the request
-    if req.Host != "" {
-        u.Host = req.Host
+    if toHTTP3 {
+        u.Scheme = "https"
+        host, port, err := net.SplitHostPort(req.Host)
+        if err != nil {
+            host = req.Host
+            port = "80"
+        }
+        if port == "80" {
+            port = "8443"
+        }
+        u.Host = fmt.Sprintf("%s:%s", host, port)
     } else {
-        // Fallback if Host header isn't set, defaulting to some default values
-        u.Host = "default-server:8443"
+        u.Scheme = "http"
+        host, port, err := net.SplitHostPort(req.Host)
+        if err != nil {
+            host = req.Host
+            port = "8443"
+        }
+        if port == "8443" {
+            port = "80"
+        }
+        u.Host = fmt.Sprintf("%s:%s", host, port)
     }
-
-    // Adjust the port to 8443 if the original is 80, regardless of the IP
-    host, port, err := net.SplitHostPort(u.Host)
-    if err != nil {
-        // If there's no port in the host, or it's malformed, assume the default
-        host = u.Host
-        port = "80" // Assume it was the default HTTP/1 port if missing
-    }
-
-    if port == "80" {
-        port = "8443" // Switch to the HTTP/3 port
-    }
-
-    // Reassemble the host with the new port
-    u.Host = fmt.Sprintf("%s:%s", host, port)
-
     return u.String()
 }
-
 
 func startHTTP3toHTTP1Proxy() {
     fmt.Println("Starting HTTP/3 to HTTP/1 proxy on :11096")
@@ -159,7 +156,7 @@ func forwardRequestToHTTP1(r *http.Request) (*http.Response, error) {
     client := &http.Client{}
 
     // Construct a fully qualified URL for forwarding the request
-    forwardedURL := fmt.Sprintf("http://localhost:80%s", r.URL.Path)  // Adjust the hostname and port as needed
+    forwardedURL := constructTargetURL(r, false)
     log.Printf("Forwarding HTTP/3 request to HTTP/1: %s %s\n", r.Method, forwardedURL)
 
     reqBody, _ := ioutil.ReadAll(r.Body)
@@ -185,7 +182,6 @@ func forwardRequestToHTTP1(r *http.Request) (*http.Response, error) {
     return resp, nil
 }
 
-
 func mustLoadCertificate() tls.Certificate {
     certFile := "certs/server.crt"
     keyFile := "certs/server.key"
@@ -198,3 +194,4 @@ func mustLoadCertificate() tls.Certificate {
     }
     return cert
 }
+
