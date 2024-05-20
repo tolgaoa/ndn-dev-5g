@@ -40,7 +40,7 @@ securityContext:
 start:
   udm: true
   tcpdump: false
-  proxy: true
+  proxy: false
 
 config:
   tz: "Europe/Paris"

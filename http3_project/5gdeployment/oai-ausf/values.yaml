@@ -42,7 +42,7 @@ securityContext:
 start:
   ausf: true
   tcpdump: false #start tcpdump collection to analyse but beware it will take a lot of space in the container/persistent volume
-  proxy: true
+  proxy: false
 
 config:
   tz: "Europe/Paris"
