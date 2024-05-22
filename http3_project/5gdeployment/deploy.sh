@@ -1,7 +1,8 @@
 #!/bin/bash
 
-proxy_version=3.0.0
+proxy_version=3.0.1
 proxyon=true
+proxymode=HTTP3
 
 st=`date +%s`
 #---------------------------------------------------------------
@@ -73,6 +74,25 @@ echo "-------------------------------------------------"
 
 for ((s=10;s<=$slice;s++))
 do
+    #-----------------------START-----------------------
+    #--------------------Proxy Config-------------------
+
+    sed -i "/startproxy/c\  startproxy: $proxyon" oai-nrf/values.yaml
+    sed -i "/startproxy/c\  startproxy: $proxyon" oai-udr/values.yaml
+    sed -i "/startproxy/c\  startproxy: $proxyon" oai-udm/values.yaml
+    sed -i "/startproxy/c\  startproxy: $proxyon" oai-ausf/values.yaml
+    sed -i "/startproxy/c\  startproxy: $proxyon" oai-amf/values.yaml
+    sed -i "/startproxy/c\  startproxy: $proxyon" oai-smf/values.yaml
+
+    sed -i "/opmode/c\  opmode: \"$proxymode\"" oai-nrf/values.yaml
+    sed -i "/opmode/c\  opmode: \"$proxymode\"" oai-udr/values.yaml
+    sed -i "/opmode/c\  opmode: \"$proxymode\"" oai-udm/values.yaml
+    sed -i "/opmode/c\  opmode: \"$proxymode\"" oai-ausf/values.yaml
+    sed -i "/opmode/c\  opmode: \"$proxymode\"" oai-amf/values.yaml
+    sed -i "/opmode/c\  opmode: \"$proxymode\"" oai-smf/values.yaml
+    #--------------------Proxy Config-------------------
+    #------------------------END------------------------
+
 	((z=$s-9))
 	#------------------------NRF-------------------------
 	sed -i "/name/c\name: oai-nrf$s" oai-nrf/Chart.yaml
@@ -93,9 +113,7 @@ do
 	sed -i "/nrfFqdn/c\  nrfFqdn: \"oai-nrf$s-svc\"" oai-udr/values.yaml
 	sed -i "30s/.*/  name: \"oai-udr$s-sa\"/" oai-udr/values.yaml
 	
-	sed -i "73s/.*/  saname: \"udr$s\"/" oai-udr/values.yaml
     sed -i "/sak8sdns/c\  sak8sdns: \"oai-udr$s-svc\"" oai-udr/values.yaml
-    sed -i "/startproxy/c\  startproxy: $proxyon" oai-udr/values.yaml
 	
 	#sed -i "45s/.*/          value: \"udr$s\"/" oai-udr/templates/deployment.yaml
 	#sed -i "20s/.*/        type: az$z/" oai-udr/templates/deployment.yaml
@@ -110,9 +128,7 @@ do
 	sed -i "/udrFqdn/c\  udrFqdn: \"oai-udr$s-svc\"" oai-udm/values.yaml
 	sed -i "29s/.*/  name: \"oai-udm$s-sa\"/" oai-udm/values.yaml
 	
-	sed -i "67s/.*/  saname: \"udm$s\"/" oai-udm/values.yaml
     sed -i "/sak8sdns/c\  sak8sdns: \"oai-udm$s-svc\"" oai-udm/values.yaml
-    sed -i "/startproxy/c\  startproxy: $proxyon" oai-udm/values.yaml
 
 	#sed -i "47s/.*/          value: \"udm$s\"/" oai-udm/templates/deployment.yaml
 	#sed -i "20s/.*/        type: az$z/" oai-udm/templates/deployment.yaml
@@ -127,9 +143,7 @@ do
 	sed -i "/udmFqdn/c\  udmFqdn: \"oai-udm$s-svc\"" oai-ausf/values.yaml
 	sed -i "31s/.*/  name: \"oai-ausf$s-sa\"/" oai-ausf/values.yaml
 
-	sed -i "68s/.*/  saname: \"ausf$s\"/" oai-ausf/values.yaml
     sed -i "/sak8sdns/c\  sak8sdns: \"oai-ausf$s-svc\"" oai-ausf/values.yaml
-    sed -i "/startproxy/c\  startproxy: $proxyon" oai-ausf/values.yaml
 
 	#sed -i "47s/.*/          value: \"ausf$s\"/" oai-ausf/templates/deployment.yaml
 	#sed -i "20s/.*/        type: az$z/" oai-ausf/templates/deployment.yaml
@@ -146,9 +160,7 @@ do
 	sed -i "29s/.*/  name: \"oai-amf$s-sa\"/" oai-amf/values.yaml
 	sed -i "/sst0/c\  sst0: \"2$s\"" oai-amf/values.yaml
 
-	sed -i "97s/.*/  saname: \"amf$s\"/" oai-amf/values.yaml
     sed -i "/sak8sdns/c\  sak8sdns: \"oai-amf$s-svc\"" oai-amf/values.yaml
-    sed -i "/startproxy/c\  startproxy: $proxyon" oai-amf/values.yaml
 
 	#sed -i "55s/.*/          value: \"amf$s\"/" oai-amf/templates/deployment.yaml
 	#sed -i "28s/.*/        type: az$z/" oai-amf/templates/deployment.yaml
@@ -167,12 +179,8 @@ do
 	sed -i "29s/.*/  name: \"oai-smf$s-sa\"/" oai-smf/values.yaml
 	sed -i "/nssaiSst0/c\  nssaiSst0: \"2$s\"" oai-smf/values.yaml
 
-	sed -i "102s/.*/  saname: \"smf$s\"/" oai-smf/values.yaml
     sed -i "/sak8sdns/c\  sak8sdns: \"oai-smf$s-svc\"" oai-smf/values.yaml
-    sed -i "/startproxy/c\  startproxy: $proxyon" oai-smf/values.yaml
 
-	#sed -i "61s/.*/          value: \"smf$s\"/" oai-smf/templates/deployment.yaml
-	#sed -i "28s/.*/        type: az$z/" oai-smf/templates/deployment.yaml
 	helm install smf$s oai-smf/ -n oai
 	wait_for_pod "oai" "oai-smf"
 	echo -e "${GREEN} ${bold} SMF$s deployed ${NC} ${NORMAL}"
@@ -253,4 +261,3 @@ echo "-------------------------------------------------"
 
 #/bin/bash ./ftart_traffic.sh $trafficusers $4 $dnnim
 #/bin/bash ./start_traffic.sh $3 $4 $dnnim $5 $6
-

@@ -15,7 +15,7 @@ tcpdumpimage:
 
 proxyimage:
   repository: tolgaomeratalay/biproxy
-  saversion: 3.0.0
+  saversion: 3.0.1
   pullPolicy: IfNotPresent
 
 ## good to use when pulling images from docker-hub mention 
@@ -54,31 +54,9 @@ config:
   nrfInterfaceHttp2PortForSBI: "8080"
   nrfApiVersion: "v1"
 
-proxyconfig:
-  saname: "nrf10"
-  sasubfunc: "nrf"
-  saip: "127.0.0.1" # this is currently set to podIP in the source code
-  saloc: "local"
-  sak8sdns: "oai-nrf10-svc"
-  savnftype: "nrf"
-  savnfid: "nrf1"
-  sasliceid: "1"
-  streamscpip: "stream-scp1-svc"
-  streamscpport: "10090"
-  randomize: "1"
+biproxy:
+  opmode: "HTTP3"
   loglevel: "trace"
-  clientcount: "0"
-  multireg: "1"
-  operationmode: "5G_SA" # PROXY -- 5G_SA
-  valmethod: "SELF" # REMOTE -- SELF -- NONE
-  routemethod: "DIRECT" # DIRECT -- SCP
-  useotel: "NO" # set to yes for integrating with an OpenTelemetry node. SVC fixed for now
-  lbmet: "round-robin" #load balancing method -- set to [pick2 ; round-robin]
-  maxret: "1" #failover retry count 
-  reqtime: "100" #request timeout duration (ms)
-  tokfetch: "TRUE" #condition for always fetching tokens, bypasses token cache for testing
-  nrfresplocal: "FALSE" #condition for local response to NRF discovery requests using the map
-  usediscontimeout: "TRUE" #condition for re-discovery upon timeout on failed outgoing requests -- FALSE for 5G_STREAM
 
 persistent:
   sharedvolume: false

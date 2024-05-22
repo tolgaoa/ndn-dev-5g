@@ -14,7 +14,7 @@ tcpdumpimage:
 
 proxyimage:
   repository: tolgaomeratalay/biproxy
-  version: 3.0.0
+  version: 3.0.1
   pullPolicy: IfNotPresent
 
 imagePullSecrets: 
@@ -69,32 +69,9 @@ config:
   mySqlPass: "linux"
   mySqlDb: "oai_db"
 
-proxyconfig:
-  saname: "udr10"
-  sasubfunc: "udr"
-  saip: "127.0.0.1" # this is currently set to podIP in the source code
-  saloc: "local"
-  sak8sdns: "oai-udr10-svc"
-  savnftype: "udr"
-  savnfid: "udr1"
-  sasliceid: "1"
-  streamscpip: "stream-scp1-svc"
-  streamscpport: "10090"
-  randomize: "1"
+biproxy:
+  opmode: "HTTP3"
   loglevel: "trace"
-  clientcount: "0"
-  multireg: "1"
-  operationmode: "5G_SA"
-  valmethod: "NONE"
-  routemethod: "SCP"
-  useotel: "NO" # set to yes for integrating with an OpenTelemetry node. SVC fixed for now
-  lbmet: "round-robin" #load balancing method -- set to [pick2 ; round-robin]
-  maxret: "3" #failover retry count
-  reqtime: "100" #request timeout duration (ms)
-  tokfetch: "TRUE" #condition for always fetching tokens, bypasses token cache for testing
-  nrfresplocal: "FALSE" #condition for local response to NRF discovery requests using the map
-  usediscontimeout: "TRUE" #condition for re-discovery upon timeout on failed outgoing requests -- FALSE for 5G_STREAM
-
 
 persistence:
   sharedvolume: false
