@@ -14,7 +14,7 @@ tcpdumpimage:
 
 proxyimage:
   repository: tolgaomeratalay/biproxy
-  version: 3.0.1
+  version: 3.0.3
   pullPolicy: IfNotPresent
 
 # good to use when pulling images from docker-hub mention for RHEL images it can be commented
@@ -99,7 +99,7 @@ config:
   sessionAmbrDl1: "1000Mbps"
 
 biproxy:
-  opmode: "HTTP3"
+  opmode: "HTTP1"
   loglevel: "trace"
 
 

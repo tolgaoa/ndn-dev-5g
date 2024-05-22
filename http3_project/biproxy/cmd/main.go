@@ -9,6 +9,7 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	// internal
+	h1 "biproxy/pkg/http1proxy"
 	h3 "biproxy/pkg/http3proxy"
 	ev "biproxy/utils/envProc"
 )
@@ -59,6 +60,7 @@ func main() {
 	switch opmode {
 	case "HTTP1":
 		log.Info("Starting Proxy in HTTP1 <--> HTTP1 Forwarding Mode")
+		h1.StartHTTP1Proxy()
 	case "HTTP2":
 		log.Info("Starting Proxy in HTTP1 <--> HTTP2 Forwarding Mode")
 	case "HTTP3":
