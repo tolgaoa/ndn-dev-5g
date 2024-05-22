@@ -14,7 +14,7 @@ tcpdumpimage:
 
 proxyimage:
   repository: tolgaomeratalay/biproxy
-  version: 2.6
+  version: 3.0.0
   pullPolicy: IfNotPresent
 
 # good to use when pulling images from docker-hub mention for RHEL images it can be commented
@@ -41,7 +41,7 @@ securityContext:
 start:
   smf: true
   tcpdump: false  #start tcpdump collection to analyse but beware it will take a lot of space in the container/persistent volume
-  proxy: false
+  startproxy: true
 
 # SMF needs two seperate interface one for http and other one for N4 to communicate with UPD. 
 # But for experimentation only one interface can be used. 

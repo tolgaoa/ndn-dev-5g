@@ -19,7 +19,7 @@ spec:
       nodeSelector:
       {{ toYaml .Values.nodeSelector | indent 2 }}
       initContainers:
-      {{- if .Values.start.proxy }}
+      {{- if .Values.start.startproxy }}
       - name: init-networking
         image: tolgaomeratalay/init:1.3
         securityContext:
@@ -97,7 +97,7 @@ spec:
             fieldRef:
               fieldPath: status.podIP
         command:
-        {{- if not .Values.start.proxy }}
+        {{- if not .Values.start.startproxy }}
           - /bin/sleep
           - infinity
         {{- end }}

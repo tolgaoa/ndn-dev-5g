@@ -1,6 +1,7 @@
 #!/bin/bash
 
-proxy_version=2.6
+proxy_version=3.0.0
+proxyon=true
 
 st=`date +%s`
 #---------------------------------------------------------------
@@ -80,6 +81,7 @@ do
 
 	sed -i "/saname/c\  saname: \"nrf$s\"" oai-nrf/values.yaml
     sed -i "/sak8sdns/c\  sak8sdns: \"oai-nrf$s-svc\"" oai-nrf/values.yaml
+    sed -i "/startproxy/c\  startproxy: $proxyon" oai-nrf/values.yaml
 
 	helm install nrf$s oai-nrf/ -n oai
 	wait_for_pod "oai" "oai-nrf"
@@ -93,6 +95,7 @@ do
 	
 	sed -i "73s/.*/  saname: \"udr$s\"/" oai-udr/values.yaml
     sed -i "/sak8sdns/c\  sak8sdns: \"oai-udr$s-svc\"" oai-udr/values.yaml
+    sed -i "/startproxy/c\  startproxy: $proxyon" oai-udr/values.yaml
 	
 	#sed -i "45s/.*/          value: \"udr$s\"/" oai-udr/templates/deployment.yaml
 	#sed -i "20s/.*/        type: az$z/" oai-udr/templates/deployment.yaml
@@ -109,6 +112,7 @@ do
 	
 	sed -i "67s/.*/  saname: \"udm$s\"/" oai-udm/values.yaml
     sed -i "/sak8sdns/c\  sak8sdns: \"oai-udm$s-svc\"" oai-udm/values.yaml
+    sed -i "/startproxy/c\  startproxy: $proxyon" oai-udm/values.yaml
 
 	#sed -i "47s/.*/          value: \"udm$s\"/" oai-udm/templates/deployment.yaml
 	#sed -i "20s/.*/        type: az$z/" oai-udm/templates/deployment.yaml
@@ -125,6 +129,7 @@ do
 
 	sed -i "68s/.*/  saname: \"ausf$s\"/" oai-ausf/values.yaml
     sed -i "/sak8sdns/c\  sak8sdns: \"oai-ausf$s-svc\"" oai-ausf/values.yaml
+    sed -i "/startproxy/c\  startproxy: $proxyon" oai-ausf/values.yaml
 
 	#sed -i "47s/.*/          value: \"ausf$s\"/" oai-ausf/templates/deployment.yaml
 	#sed -i "20s/.*/        type: az$z/" oai-ausf/templates/deployment.yaml
@@ -143,6 +148,7 @@ do
 
 	sed -i "97s/.*/  saname: \"amf$s\"/" oai-amf/values.yaml
     sed -i "/sak8sdns/c\  sak8sdns: \"oai-amf$s-svc\"" oai-amf/values.yaml
+    sed -i "/startproxy/c\  startproxy: $proxyon" oai-amf/values.yaml
 
 	#sed -i "55s/.*/          value: \"amf$s\"/" oai-amf/templates/deployment.yaml
 	#sed -i "28s/.*/        type: az$z/" oai-amf/templates/deployment.yaml
@@ -163,6 +169,7 @@ do
 
 	sed -i "102s/.*/  saname: \"smf$s\"/" oai-smf/values.yaml
     sed -i "/sak8sdns/c\  sak8sdns: \"oai-smf$s-svc\"" oai-smf/values.yaml
+    sed -i "/startproxy/c\  startproxy: $proxyon" oai-smf/values.yaml
 
 	#sed -i "61s/.*/          value: \"smf$s\"/" oai-smf/templates/deployment.yaml
 	#sed -i "28s/.*/        type: az$z/" oai-smf/templates/deployment.yaml

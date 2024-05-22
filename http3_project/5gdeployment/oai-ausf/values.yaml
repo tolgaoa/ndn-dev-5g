@@ -14,7 +14,7 @@ tcpdumpimage:
 
 proxyimage:
   repository: tolgaomeratalay/biproxy
-  version: 2.6
+  version: 3.0.0
   pullPolicy: IfNotPresent
 
 ## good to use when pulling images from docker-hub mention 
@@ -42,7 +42,7 @@ securityContext:
 start:
   ausf: true
   tcpdump: false #start tcpdump collection to analyse but beware it will take a lot of space in the container/persistent volume
-  proxy: false
+  startproxy: true
 
 config:
   tz: "Europe/Paris"

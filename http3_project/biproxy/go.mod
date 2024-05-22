@@ -1,13 +1,10 @@
-module http3_project
+module biproxy
 
 go 1.21
 
 toolchain go1.22.3
 
-require (
-	github.com/quic-go/quic-go v0.43.1
-	github.com/wzshiming/socks5 v0.4.3
-)
+require github.com/quic-go/quic-go v0.43.1
 
 require (
 	github.com/go-task/slim-sprig v0.0.0-20230315185526-52ccab3ef572 // indirect

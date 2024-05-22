@@ -10,9 +10,9 @@ build:
 
 # Run "make image VERSION=x.x.x"
 image:
-	docker build . -t tolgaomeratalay/httpproxy:$(VERSION)
+	docker build . -t tolgaomeratalay/biproxy:$(VERSION)
 push:
-	docker push tolgaomeratalay/httpproxy:$(VERSION)
+	docker push tolgaomeratalay/biproxy:$(VERSION)
 
 run:
 	go run $(SRC_DIR)/main.go
