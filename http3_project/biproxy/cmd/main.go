@@ -10,8 +10,10 @@ import (
 
 	// internal
 	h1 "biproxy/pkg/http1proxy"
+	h1t "biproxy/pkg/http1TLSproxy"
 	h2 "biproxy/pkg/http2proxy"
 	h3 "biproxy/pkg/http3proxy"
+	hs "biproxy/pkg/httpsproxy"
 	ev "biproxy/utils/envProc"
 )
 
@@ -62,6 +64,10 @@ func main() {
 	case "HTTP1":
 		log.Info("Starting Proxy in HTTP1 <--> HTTP1 Forwarding Mode")
 		h1.StartHTTP1Proxy()
+    case "HTTPS":
+        log.Info("Starting Proxy in HTTP1 <--> HTTP1 (with TLS) Forwarding Mode")
+        go h1t.StartHTTP1Proxy()
+        hs.StartHTTPSProxy()
 	case "HTTP2":
 		log.Info("Starting Proxy in HTTP1 <--> HTTP2 Forwarding Mode")
         go h2.StartHTTP1toHTTP2Proxy()

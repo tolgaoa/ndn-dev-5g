@@ -20,7 +20,7 @@ metadata:
   name: {{ .Chart.Name }}-{{ .Release.Namespace }}-binding
 subjects:
 - kind: ServiceAccount
-  name: {{ .Values.serviceAccount.name }}
+  name: {{ .Values.serviceAccount.svcname }}
   namespace: {{ .Release.Namespace }}
 roleRef:
   kind: Role

@@ -21,7 +21,8 @@ spec:
       initContainers:
       {{- if .Values.start.startproxy }}
       - name: init-networking
-        image: tolgaomeratalay/init:1.4
+        image: "{{ .Values.initimage.repository }}:{{ .Values.initimage.initversion }}"
+        imagePullPolicy: {{ .Values.initimage.pullPolicy }}
         securityContext:
           capabilities:
             add:
@@ -48,6 +49,8 @@ spec:
           value: {{ .Values.biproxy.loglevel | quote }}
         - name: OPERATION_MODE
           value: {{ .Values.biproxy.opmode | quote }}
+        - name: USE_TLS
+          value: {{ .Values.biproxy.http1tls | quote }}
         - name: POD_IP
           valueFrom:
             fieldRef:

@@ -14,7 +14,12 @@ tcpdumpimage:
 
 proxyimage:
   repository: tolgaomeratalay/biproxy
-  version: 3.0.4
+  saversion: 3.0.12
+  pullPolicy: IfNotPresent
+
+initimage:
+  repository: tolgaomeratalay/init
+  initversion: 2.0.2
   pullPolicy: IfNotPresent
 
 ## good to use when pulling images from docker-hub mention 
@@ -28,7 +33,7 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: "oai-ausf10-sa"
+  svcname: "oai-ausf10-sa"
 
 #service type is fixed to clusterIP, it is only support for non multus interface (eth0)
 
@@ -65,8 +70,9 @@ config:
   registerNrf: "no"
 
 biproxy:
-  opmode: "HTTP2"
+  opmode: "HTTPS"
   loglevel: "trace"
+  http1tls: "false"
 
 persistence:
   sharedvolume: false

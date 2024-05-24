@@ -14,7 +14,12 @@ tcpdumpimage:
 
 proxyimage:
   repository: tolgaomeratalay/biproxy
-  version: 3.0.4
+  saversion: 3.0.12
+  pullPolicy: IfNotPresent
+
+initimage:
+  repository: tolgaomeratalay/init
+  initversion: 2.0.2
   pullPolicy: IfNotPresent
 
 ## good to use when pulling images from docker-hub mention 
@@ -26,7 +31,7 @@ serviceAccount:
   create: true
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: "oai-udm10-sa"
+  svcname: "oai-udm10-sa"
 
 podSecurityContext:
   runAsUser: 0
@@ -64,8 +69,9 @@ config:
   nrfFqdn: "oai-nrf10-svc"
 
 biproxy:
-  opmode: "HTTP2"
+  opmode: "HTTPS"
   loglevel: "trace"
+  http1tls: "false"
 
 persistence:
   sharedvolume: false

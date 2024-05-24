@@ -1,8 +1,11 @@
 #!/bin/bash
 
-proxy_version=3.0.4
+proxy_version=3.0.12
+init_version=2.0.2
+
+proxymode=HTTPS
 proxyon=true
-proxymode=HTTP2
+usetls=false
 
 st=`date +%s`
 #---------------------------------------------------------------
@@ -76,6 +79,19 @@ for ((s=10;s<=$slice;s++))
 do
     #-----------------------START-----------------------
     #--------------------Proxy Config-------------------
+	sed -i "/initversion/c\  initversion: $init_version" oai-nrf/values.yaml
+	sed -i "/initversion/c\  initversion: $init_version" oai-udr/values.yaml
+	sed -i "/initversion/c\  initversion: $init_version" oai-udm/values.yaml
+	sed -i "/initversion/c\  initversion: $init_version" oai-ausf/values.yaml
+	sed -i "/initversion/c\  initversion: $init_version" oai-amf/values.yaml
+	sed -i "/initversion/c\  initversion: $init_version" oai-smf/values.yaml
+	
+	sed -i "/saversion/c\  saversion: $proxy_version" oai-nrf/values.yaml
+	sed -i "/saversion/c\  saversion: $proxy_version" oai-udr/values.yaml
+	sed -i "/saversion/c\  saversion: $proxy_version" oai-udm/values.yaml
+	sed -i "/saversion/c\  saversion: $proxy_version" oai-ausf/values.yaml
+	sed -i "/saversion/c\  saversion: $proxy_version" oai-amf/values.yaml
+	sed -i "/saversion/c\  saversion: $proxy_version" oai-smf/values.yaml
 
     sed -i "/startproxy/c\  startproxy: $proxyon" oai-nrf/values.yaml
     sed -i "/startproxy/c\  startproxy: $proxyon" oai-udr/values.yaml
@@ -90,80 +106,73 @@ do
     sed -i "/opmode/c\  opmode: \"$proxymode\"" oai-ausf/values.yaml
     sed -i "/opmode/c\  opmode: \"$proxymode\"" oai-amf/values.yaml
     sed -i "/opmode/c\  opmode: \"$proxymode\"" oai-smf/values.yaml
+    
+	sed -i "/http1tls/c\  http1tls: \"$usetls\"" oai-nrf/values.yaml
+	sed -i "/http1tls/c\  http1tls: \"$usetls\"" oai-udr/values.yaml
+	sed -i "/http1tls/c\  http1tls: \"$usetls\"" oai-udm/values.yaml
+	sed -i "/http1tls/c\  http1tls: \"$usetls\"" oai-ausf/values.yaml
+	sed -i "/http1tls/c\  http1tls: \"$usetls\"" oai-amf/values.yaml
+	sed -i "/http1tls/c\  http1tls: \"$usetls\"" oai-smf/values.yaml
     #--------------------Proxy Config-------------------
     #------------------------END------------------------
 
 	((z=$s-9))
 	#------------------------NRF-------------------------
 	sed -i "/name/c\name: oai-nrf$s" oai-nrf/Chart.yaml
-	sed -i "/saversion/c\  saversion: $proxy_version" oai-nrf/values.yaml
-	sed -i "/svcname/c\  svcname: \"oai-nrf$s-sa\"" oai-nrf/values.yaml
 
 	sed -i "/saname/c\  saname: \"nrf$s\"" oai-nrf/values.yaml
+	sed -i "/svcname/c\  svcname: \"oai-nrf$s-sa\"" oai-nrf/values.yaml
     sed -i "/sak8sdns/c\  sak8sdns: \"oai-nrf$s-svc\"" oai-nrf/values.yaml
-    sed -i "/startproxy/c\  startproxy: $proxyon" oai-nrf/values.yaml
 
 	helm install nrf$s oai-nrf/ -n oai
 	wait_for_pod "oai" "oai-nrf"
 	echo -e "${GREEN} ${bold} NRF$s deployed ${NC} ${NORMAL}"
 
 	#------------------------UDR-------------------------
-	sed -i "17s/.*/  version: $proxy_version/" oai-udr/values.yaml
 	sed -i "23s/.*/name: oai-udr$s/" oai-udr/Chart.yaml
-	sed -i "/nrfFqdn/c\  nrfFqdn: \"oai-nrf$s-svc\"" oai-udr/values.yaml
-	sed -i "30s/.*/  name: \"oai-udr$s-sa\"/" oai-udr/values.yaml
-	
+
+	sed -i "/nrfFqdn/c\  nrfFqdn: \"oai-nrf$s-svc\"" oai-udr/values.yaml	
+	sed -i "/svcname/c\  svcname: \"oai-udr$s-sa\"" oai-udr/values.yaml
     sed -i "/sak8sdns/c\  sak8sdns: \"oai-udr$s-svc\"" oai-udr/values.yaml
 	
-	#sed -i "45s/.*/          value: \"udr$s\"/" oai-udr/templates/deployment.yaml
-	#sed -i "20s/.*/        type: az$z/" oai-udr/templates/deployment.yaml
 	helm install udr$s oai-udr/ -n oai
 	wait_for_pod "oai" "oai-udr"
 	echo -e "${GREEN} ${bold} UDR$s deployed ${NC} ${NORMAL}"
 	
 	#------------------------UDM-------------------------
-	sed -i "17s/.*/  version: $proxy_version/" oai-udm/values.yaml
 	sed -i "23s/.*/name: oai-udm$s/" oai-udm/Chart.yaml
+
 	sed -i "/nrfFqdn/c\  nrfFqdn: \"oai-nrf$s-svc\"" oai-udm/values.yaml
 	sed -i "/udrFqdn/c\  udrFqdn: \"oai-udr$s-svc\"" oai-udm/values.yaml
-	sed -i "29s/.*/  name: \"oai-udm$s-sa\"/" oai-udm/values.yaml
-	
+	sed -i "/svcname/c\  svcname: \"oai-udm$s-sa\"" oai-udm/values.yaml
     sed -i "/sak8sdns/c\  sak8sdns: \"oai-udm$s-svc\"" oai-udm/values.yaml
 
-	#sed -i "47s/.*/          value: \"udm$s\"/" oai-udm/templates/deployment.yaml
-	#sed -i "20s/.*/        type: az$z/" oai-udm/templates/deployment.yaml
 	helm install udm$s oai-udm/ -n oai
 	wait_for_pod "oai" "oai-udm"
 	echo -e "${GREEN} ${bold} UDM$s deployed ${NC} ${NORMAL}"
 	
 	#------------------------AUSF------------------------
-	sed -i "17s/.*/  version: $proxy_version/" oai-ausf/values.yaml
 	sed -i "22s/.*/name: oai-ausf$s/" oai-ausf/Chart.yaml
+
 	sed -i "/nrfFqdn/c\  nrfFqdn: \"oai-nrf$s-svc\"" oai-ausf/values.yaml
 	sed -i "/udmFqdn/c\  udmFqdn: \"oai-udm$s-svc\"" oai-ausf/values.yaml
-	sed -i "31s/.*/  name: \"oai-ausf$s-sa\"/" oai-ausf/values.yaml
-
+	sed -i "/svcname/c\  svcname: \"oai-ausf$s-sa\"" oai-ausf/values.yaml
     sed -i "/sak8sdns/c\  sak8sdns: \"oai-ausf$s-svc\"" oai-ausf/values.yaml
 
-	#sed -i "47s/.*/          value: \"ausf$s\"/" oai-ausf/templates/deployment.yaml
-	#sed -i "20s/.*/        type: az$z/" oai-ausf/templates/deployment.yaml
 	helm install ausf$s oai-ausf/ -n oai
 	wait_for_pod "oai" "oai-ausf"
 	echo -e "${GREEN} ${bold} AUSF$s deployed ${NC} ${NORMAL}"
 	
 	#------------------------AMF-------------------------
 	sed -i "22s/.*/name: oai-amf$s/" oai-amf/Chart.yaml	
-	sed -i "17s/.*/  version: $proxy_version/" oai-amf/values.yaml
+	
 	sed -i "/nrfFqdn/c\  nrfFqdn: \"oai-nrf$s-svc\"" oai-amf/values.yaml
 	sed -i "/smfFqdn/c\  nrfFqdn: \"oai-smf$s-svc\"" oai-amf/values.yaml
 	sed -i "/ausfFqdn/c\  ausfFqdn: \"oai-ausf$s-svc\"" oai-amf/values.yaml
-	sed -i "29s/.*/  name: \"oai-amf$s-sa\"/" oai-amf/values.yaml
 	sed -i "/sst0/c\  sst0: \"2$s\"" oai-amf/values.yaml
-
+	sed -i "/svcname/c\  svcname: \"oai-amf$s-sa\"" oai-amf/values.yaml
     sed -i "/sak8sdns/c\  sak8sdns: \"oai-amf$s-svc\"" oai-amf/values.yaml
 
-	#sed -i "55s/.*/          value: \"amf$s\"/" oai-amf/templates/deployment.yaml
-	#sed -i "28s/.*/        type: az$z/" oai-amf/templates/deployment.yaml
 	helm install amf$s oai-amf/ -n oai
 	wait_for_pod "oai" "oai-amf"
 	echo -e "${GREEN} ${bold} AMF$s deployed ${NC} ${NORMAL}"
@@ -172,13 +181,12 @@ do
 	
 	#------------------------SMF-------------------------
 	sed -i "22s/.*/name: oai-smf$s/" oai-smf/Chart.yaml
-	sed -i "17s/.*/  version: $proxy_version/" oai-smf/values.yaml
+
 	sed -i "/nrfFqdn/c\  nrfFqdn: \"oai-nrf$s-svc\"" oai-smf/values.yaml
 	sed -i "/udmFqdn/c\  udmFqdn: \"oai-udm$s-svc\"" oai-smf/values.yaml
 	sed -i "/amfFqdn/c\  amfFqdn: \"oai-amf$s-svc\"" oai-smf/values.yaml
-	sed -i "29s/.*/  name: \"oai-smf$s-sa\"/" oai-smf/values.yaml
 	sed -i "/nssaiSst0/c\  nssaiSst0: \"2$s\"" oai-smf/values.yaml
-
+	sed -i "/svcname/c\  svcname: \"oai-smf$s-sa\"" oai-smf/values.yaml
     sed -i "/sak8sdns/c\  sak8sdns: \"oai-smf$s-svc\"" oai-smf/values.yaml
 
 	helm install smf$s oai-smf/ -n oai
@@ -187,12 +195,13 @@ do
 	
 	#------------------------UPF-------------------------
 	sed -i "22s/.*/name: oai-spgwu-tiny$s/" oai-spgwu-tiny/Chart.yaml
+
 	sed -i "/nrfFqdn/c\  nrfFqdn: \"oai-nrf$s-svc\"" oai-spgwu-tiny/values.yaml
 	sed -i "/fqdn/c\  fqdn: \"oai-spgwu-tiny$s-svc\"" oai-spgwu-tiny/values.yaml
 	sed -i "/oai-spgwu-tiny-sa/c\  name: \"oai-spgwu-tiny$s-sa\"" oai-spgwu-tiny/values.yaml
 	sed -i "24s/.*/  name: \"oai-spgwu-tiny$s\"/" oai-spgwu-tiny/values.yaml
 	sed -i "/nssaiSst0/c\  nssaiSst0: \"2$s\"" oai-spgwu-tiny/values.yaml
-	#sed -i "27s/.*/        type: az$z/" oai-spgwu-tiny/templates/deployment.yaml
+	
 	helm install upf$s oai-spgwu-tiny/ -n oai
 	wait_for_pod "oai" "oai-spgwu"
 	sleep 1
