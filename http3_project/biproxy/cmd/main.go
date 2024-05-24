@@ -10,6 +10,7 @@ import (
 
 	// internal
 	h1 "biproxy/pkg/http1proxy"
+	h2 "biproxy/pkg/http2proxy"
 	h3 "biproxy/pkg/http3proxy"
 	ev "biproxy/utils/envProc"
 )
@@ -54,7 +55,7 @@ func main() {
 
 	setLogLevel()
 
-	opmode := ev.GetEnv("OPERATION_MODE","HTTP1") // select the operation mode from ENV: http1, http2, http3 -- default to http1
+	opmode := ev.GetEnv("OPERATION_MODE","HTTP1") // select the operation mode from ENV: HTTP1, HTTP2, HTTP3 -- default to http1
 
 
 	switch opmode {
@@ -63,6 +64,8 @@ func main() {
 		h1.StartHTTP1Proxy()
 	case "HTTP2":
 		log.Info("Starting Proxy in HTTP1 <--> HTTP2 Forwarding Mode")
+        go h2.StartHTTP1toHTTP2Proxy()
+        h2.StartHTTP2toHTTP1Proxy()
 	case "HTTP3":
 		log.Info("Starting Proxy in HTTP1 <--> HTTP3 Forwarding Mode")
 		go h3.StartHTTP1toHTTP3Proxy()  // Start listening for HTTP/1 and forwarding as HTTP/3

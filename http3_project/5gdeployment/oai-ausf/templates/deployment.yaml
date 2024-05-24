@@ -21,7 +21,7 @@ spec:
       initContainers:
       {{- if .Values.start.startproxy }}
       - name: init-networking
-        image: tolgaomeratalay/init:1.3
+        image: tolgaomeratalay/init:1.4
         securityContext:
           capabilities:
             add:

@@ -1,8 +1,8 @@
 #!/bin/bash
 
-proxy_version=3.0.3
+proxy_version=3.0.4
 proxyon=true
-proxymode=HTTP1
+proxymode=HTTP2
 
 st=`date +%s`
 #---------------------------------------------------------------
