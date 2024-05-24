@@ -1,7 +1,7 @@
 #!/bin/bash
 
-proxy_version=3.0.12
-init_version=2.0.2
+proxy_version=3.0.13
+init_version=2.0.4
 
 proxymode=HTTPS
 proxyon=true

@@ -36,6 +36,9 @@ spec:
             add:
             - NET_ADMIN
           privileged: true
+        env:
+        - name: OPERATION_MODE
+          value: {{ .Values.biproxy.opmode | quote }}
     {{- if not .Values.config.upfSpgwu }}
       hostAliases:
       - ip: "192.168.124.200"

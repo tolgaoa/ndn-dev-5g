@@ -28,6 +28,9 @@ spec:
             add:
             - NET_ADMIN
           privileged: true
+        env:
+        - name: OPERATION_MODE
+          value: {{ .Values.biproxy.opmode | quote }}
       imagePullSecrets:
         {{ toYaml .Values.imagePullSecrets | indent 8 }}
       {{- end }}

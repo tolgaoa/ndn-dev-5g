@@ -14,12 +14,12 @@ tcpdumpimage:
 
 proxyimage:
   repository: tolgaomeratalay/biproxy
-  saversion: 3.0.12
+  saversion: 3.0.13
   pullPolicy: IfNotPresent
 
 initimage:
   repository: tolgaomeratalay/init
-  initversion: 2.0.2
+  initversion: 2.0.4
   pullPolicy: IfNotPresent
 
 ## good to use when pulling images from docker-hub mention 
