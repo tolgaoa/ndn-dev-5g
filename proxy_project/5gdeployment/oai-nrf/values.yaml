@@ -60,7 +60,7 @@ config:
   nrfApiVersion: "v1"
 
 biproxy:
-  opmode: "HTTPS"
+  opmode: "HTTP3"
   loglevel: "trace"
   http1tls: "false"
 

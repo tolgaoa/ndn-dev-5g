@@ -1,8 +1,8 @@
 kubernetesType: Vanilla  #Vanilla for community kubernetes distribution
 
 nfimage:
-  repository: tolgaomeratalay/udm
-  version: augv1                        #image tag, develop tag for experimental features 
+  repository: docker.io/oaisoftwarealliance/oai-udr # image name either locally present or in a public/private repository
+  version: v1.5.0 #image tag, develop tag for experimental features 
   #pullPolicy: IfNotPresent or Never or Always
   pullPolicy: IfNotPresent
 
@@ -22,54 +22,60 @@ initimage:
   initversion: 2.0.4
   pullPolicy: IfNotPresent
 
-## good to use when pulling images from docker-hub mention 
 imagePullSecrets: 
   - name: "regcred"
 
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
+  # Annotations to add to the service account
+  annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  svcname: "oai-udm10-sa"
+  svcname: "oai-udr10-sa"
+
+#service type is fixed to clusterIP, it is only support for non multus interface (eth0)
 
 podSecurityContext:
   runAsUser: 0
   runAsGroup: 0
 
-#service type is fixed to clusterIP, it is only support for non multus interface (eth0)
-
 securityContext:
   privileged: false
 
+service:
+  type: ClusterIP
+  http1Port: 80
+  http2Port: 8080
+
 start:
-  udm: true
-  tcpdump: false
+  udr: true
+  tcpdump: false #start tcpdump collection to analyse but beware it will take a lot of space in the container/persistent volume
   startproxy: true
 
 config:
   tz: "Europe/Paris"
-  instance: 0
+  instance: "0"
+  udrname: "oai-udr"
   pidDirectory: "/var/run"
-  udmName: "oai-udm"
   sbiIfName: "eth0"
   sbiPortHttp1: "80"
   sbiPortHttp2: "8080"
-  udmApiVersionNb: "v1"
-  useFqdnDns: "yes"       #yes to enable FQDN resoultion instead of ip-addresses but we still need to put some dummy ip-address in Ip-address field 
-  nfRegistration: "no"    #yes to register to NRF
-  useHttp2: "no"          #yes to enable http2
-  udrIpAddress: "127.0.0.1"
-  udrPort: "80"
-  udrApiVersionNb: "v1"   #Nb means northbound
-  udrFqdn: "oai-udr10-svc"
-  nrfIpAddress: "127.0.0.1"
+  udrApiVersion: "v1"
+  nrfIpv4Address: "127.0.0.1"
   nrfPort: "80"
-  nrfApiVersionNb: "v1"   #Nb means northbound
+  nrfApiVersion: "v1"
   nrfFqdn: "oai-nrf10-svc"
+  registerNrf: "no"
+  usehttp2: "no"
+  useFqdnDns: "yes"
+  mySqlServer: "mysql"
+  mySqlUser: "root"
+  mySqlPass: "linux"
+  mySqlDb: "oai_db"
 
 biproxy:
-  opmode: "HTTPS"
+  opmode: "HTTP3"
   loglevel: "trace"
   http1tls: "false"
 
@@ -77,7 +83,7 @@ persistence:
   sharedvolume: false
   volumneName: managed-nfs-storage
   size: 1Gi
-
+  
 resources:
   define: false
   limits:
@@ -101,7 +107,8 @@ livenessProbe: false
 
 terminationGracePeriodSeconds: 5
 
-nodeSelector: 
+nodeSelector:
   type: az
 
-nodeName: 
+nodeName:
+

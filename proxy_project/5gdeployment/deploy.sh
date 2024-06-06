@@ -3,7 +3,7 @@
 proxy_version=3.0.13
 init_version=2.0.4
 
-proxymode=HTTPS
+proxymode=HTTP3
 proxyon=true
 usetls=false
 

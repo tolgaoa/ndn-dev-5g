@@ -70,7 +70,7 @@ config:
   registerNrf: "no"
 
 biproxy:
-  opmode: "HTTPS"
+  opmode: "HTTP3"
   loglevel: "trace"
   http1tls: "false"
 
@@ -104,6 +104,5 @@ terminationGracePeriodSeconds: 5
 
 nodeSelector:
   type: az
-
 
 nodeName: 
