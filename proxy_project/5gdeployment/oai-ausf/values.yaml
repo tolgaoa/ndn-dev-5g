@@ -47,7 +47,7 @@ securityContext:
 start:
   ausf: true
   tcpdump: false #start tcpdump collection to analyse but beware it will take a lot of space in the container/persistent volume
-  startproxy: true
+  startproxy: false
 
 config:
   tz: "Europe/Paris"
@@ -70,7 +70,7 @@ config:
   registerNrf: "no"
 
 biproxy:
-  opmode: "HTTP3"
+  opmode: "HTTP1"
   loglevel: "trace"
   http1tls: "false"
 

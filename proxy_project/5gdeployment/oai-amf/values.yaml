@@ -47,7 +47,7 @@ securityContext:
 start:
   amf: true
   tcpdump: false
-  startproxy: true
+  startproxy: false
 
 # AMF needs two seperate interface one for http (for SBI) and other one for SCTP (N1/N2) to communicate with gNB. 
 # But for experimentation only one interface can be used. 
@@ -99,7 +99,7 @@ config:
   mySqlDb: "oai_db" # OPTIONAL: used only if not using AUSF
 
 biproxy:
-  opmode: "HTTP3"
+  opmode: "HTTP1"
   loglevel: "trace"
   http1tls: "false"
 

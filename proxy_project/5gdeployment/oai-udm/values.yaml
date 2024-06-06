@@ -45,7 +45,7 @@ securityContext:
 start:
   udm: true
   tcpdump: false
-  startproxy: true
+  startproxy: false
 
 config:
   tz: "Europe/Paris"
@@ -69,7 +69,7 @@ config:
   nrfFqdn: "oai-nrf10-svc"
 
 biproxy:
-  opmode: "HTTP3"
+  opmode: "HTTP1"
   loglevel: "trace"
   http1tls: "false"
 
