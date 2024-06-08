@@ -3,8 +3,8 @@
 proxy_version=3.0.13
 init_version=2.0.4
 
-proxymode=HTTP1
-proxyon=false
+proxymode=HTTP3
+proxyon=true
 usetls=false
 
 st=`date +%s`
