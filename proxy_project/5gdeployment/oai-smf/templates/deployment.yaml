@@ -39,6 +39,8 @@ spec:
         env:
         - name: OPERATION_MODE
           value: {{ .Values.biproxy.opmode | quote }}
+        - name: PACKET_LOSS_RATE
+          value: {{ .Values.biproxy.packetloss | quote }}
     {{- if not .Values.config.upfSpgwu }}
       hostAliases:
       - ip: "192.168.124.200"

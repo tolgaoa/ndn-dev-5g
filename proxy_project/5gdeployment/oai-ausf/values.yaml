@@ -19,7 +19,7 @@ proxyimage:
 
 initimage:
   repository: tolgaomeratalay/init
-  initversion: 2.0.6
+  initversion: 2.0.8
   pullPolicy: IfNotPresent
 
 ## good to use when pulling images from docker-hub mention 
@@ -70,9 +70,10 @@ config:
   registerNrf: "no"
 
 biproxy:
-  opmode: "HTTP1"
+  opmode: "HTTP3"
   loglevel: "trace"
   http1tls: "false"
+  packetloss: "1%"
 
 persistence:
   sharedvolume: false

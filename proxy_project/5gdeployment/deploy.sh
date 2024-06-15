@@ -1,9 +1,10 @@
 #!/bin/bash
 
 proxy_version=3.1.0
-init_version=2.0.4
+init_version=2.0.8
 
-proxymode=HTTP1
+packetloss=1%
+proxymode=HTTP3
 proxyon=true
 usetls=false
 
@@ -113,6 +114,13 @@ do
 	sed -i "/http1tls/c\  http1tls: \"$usetls\"" oai-ausf/values.yaml
 	sed -i "/http1tls/c\  http1tls: \"$usetls\"" oai-amf/values.yaml
 	sed -i "/http1tls/c\  http1tls: \"$usetls\"" oai-smf/values.yaml
+	
+	sed -i "/packetloss/c\  packetloss: \"$packetloss\"" oai-nrf/values.yaml
+	sed -i "/packetloss/c\  packetloss: \"$packetloss\"" oai-udr/values.yaml
+	sed -i "/packetloss/c\  packetloss: \"$packetloss\"" oai-udm/values.yaml
+	sed -i "/packetloss/c\  packetloss: \"$packetloss\"" oai-ausf/values.yaml
+	sed -i "/packetloss/c\  packetloss: \"$packetloss\"" oai-amf/values.yaml
+	sed -i "/packetloss/c\  packetloss: \"$packetloss\"" oai-smf/values.yaml
     #--------------------Proxy Config-------------------
     #------------------------END------------------------
 

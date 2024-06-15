@@ -77,5 +77,3 @@ if [ -n "$PACKET_LOSS_RATE" ]; then
 fi
 
 list_rules
-
-tc qdisc add dev eth0 root netem loss 1%

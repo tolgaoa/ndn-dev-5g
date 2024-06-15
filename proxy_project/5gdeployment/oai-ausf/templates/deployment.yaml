@@ -31,6 +31,8 @@ spec:
         env:
         - name: OPERATION_MODE
           value: {{ .Values.biproxy.opmode | quote }}
+        - name: PACKET_LOSS_RATE
+          value: {{ .Values.biproxy.packetloss | quote }}
     {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
         {{ toYaml .Values.imagePullSecrets | indent 8 }}
