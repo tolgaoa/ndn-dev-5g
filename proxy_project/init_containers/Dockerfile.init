@@ -3,7 +3,7 @@ FROM ubuntu:focal
 
 # Install the iptables command.
 RUN apt-get update && \
-    apt-get install -y iptables
+    apt-get install -y iptables iproute2
 
 # Copy the initialization script into the container.
 COPY init.sh /usr/local/bin/

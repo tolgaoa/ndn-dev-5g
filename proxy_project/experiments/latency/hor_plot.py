@@ -24,11 +24,11 @@ http_requests_labels = [
     '5GAKAChain'
 ]
 
-ytick_labelsize = 14
-xtick_labelsize = 14
-xlabelsize = 14
+ytick_labelsize = 20
+xtick_labelsize = 20
+xlabelsize = 20
 title_fontsize = 16
-legend_fontsize = 12
+legend_fontsize = 20
 
 group_spacing = 1.5
 

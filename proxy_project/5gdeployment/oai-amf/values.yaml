@@ -2,7 +2,7 @@ kubernetesType: Vanilla  #Vanilla for community kubernetes distribution
 
 nfimage:  # image name either locally present or in a public/private repository
   repository: tolgaomeratalay/amf         ## The image will be pulled from dockerhub
-  version: augv3                                  #image tag, develop tag for experimental features
+  version: augv4 #augv3                                  #image tag, develop tag for experimental features
   # pullPolicy: IfNotPresent or Never or Always
   pullPolicy: IfNotPresent
 
@@ -14,12 +14,12 @@ tcpdumpimage:
 
 proxyimage:
   repository: tolgaomeratalay/biproxy
-  saversion: 3.0.13
+  saversion: 3.1.0
   pullPolicy: IfNotPresent
 
 initimage:
   repository: tolgaomeratalay/init
-  initversion: 2.0.4
+  initversion: 2.0.6
   pullPolicy: IfNotPresent
 
 ## good to use when pulling images from docker-hub mention 
@@ -99,9 +99,10 @@ config:
   mySqlDb: "oai_db" # OPTIONAL: used only if not using AUSF
 
 biproxy:
-  opmode: "HTTP3"
+  opmode: "HTTP1"
   loglevel: "trace"
   http1tls: "false"
+  packetloss: "1%"
 
 persistent:
   sharedvolume: false

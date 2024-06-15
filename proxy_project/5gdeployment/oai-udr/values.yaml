@@ -14,12 +14,12 @@ tcpdumpimage:
 
 proxyimage:
   repository: tolgaomeratalay/biproxy
-  saversion: 3.0.13
+  saversion: 3.1.0
   pullPolicy: IfNotPresent
 
 initimage:
   repository: tolgaomeratalay/init
-  initversion: 2.0.4
+  initversion: 2.0.6
   pullPolicy: IfNotPresent
 
 imagePullSecrets: 
@@ -75,7 +75,7 @@ config:
   mySqlDb: "oai_db"
 
 biproxy:
-  opmode: "HTTP3"
+  opmode: "HTTP1"
   loglevel: "trace"
   http1tls: "false"
 

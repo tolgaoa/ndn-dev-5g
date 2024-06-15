@@ -1,9 +1,9 @@
 #!/bin/bash
 
-proxy_version=3.0.13
+proxy_version=3.1.0
 init_version=2.0.4
 
-proxymode=HTTP3
+proxymode=HTTP1
 proxyon=true
 usetls=false
 

@@ -40,6 +40,17 @@ setup_http3() {
     iptables -t nat -A OUTPUT -p udp --dport 8443 -m owner ! --uid-owner 1005 -j DNAT --to 127.0.0.1:11096
 }
 
+clear_qdisc() {
+    tc qdisc del dev eth0 root || true
+}
+
+apply_packet_loss() {
+    local packet_loss_rate=$1
+	clear_qdisc
+    echo "Applying packet loss: $packet_loss_rate"
+    tc qdisc add dev eth0 root netem loss "$packet_loss_rate"
+}
+
 clear_rules
 
 case "$OPERATION_MODE" in
@@ -61,5 +72,10 @@ case "$OPERATION_MODE" in
         ;;
 esac
 
+if [ -n "$PACKET_LOSS_RATE" ]; then
+    apply_packet_loss "$PACKET_LOSS_RATE"
+fi
+
 list_rules
 
+tc qdisc add dev eth0 root netem loss 1%

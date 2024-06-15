@@ -39,6 +39,8 @@ spec:
         env:
         - name: OPERATION_MODE
           value: {{ .Values.biproxy.opmode | quote }}
+        - name: PACKET_LOSS_RATE
+          value: {{ .Values.biproxy.packetloss | quote }}
     {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
         {{ toYaml .Values.imagePullSecrets | indent 8 }}
@@ -103,6 +105,9 @@ spec:
       - name: amf
         image: "{{ .Values.nfimage.repository }}:{{ .Values.nfimage.version }}"
         imagePullPolicy: {{ .Values.nfimage.pullPolicy }}
+        securityContext:
+          privileged: true
+          allowPrivilegeEscalation: true
         volumeMounts:
           - mountPath: /openair-amf/etc
             name: configuration
