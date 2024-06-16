@@ -9,7 +9,7 @@ fi
 # Total number of requests to distribute over a 1-minute window
 TOTAL_REQUESTS=$1
 
-DURATION_MINUTES=5
+DURATION_MINUTES=3
 
 # Output files
 amf_to_ausf_aka_outputFile="amf_to_ausf_aka_request_times.csv"
@@ -100,10 +100,10 @@ execute_requests_for_a_minute() {
     for (( i=0; i<TOTAL_REQUESTS; i++ )); do
         # Determine which request to make based on modulo of i
         case $((i % 4)) in
-            0) make_amf_ausf_aka_request & ;;
+            0) make_amf_nrf_disc_request & ;;
             1) make_amf_nrf_disc_request & ;;
-            2) make_amf_pdu_session_request & ;;
-            3) make_amf_smf_modify_request & ;;
+            2) make_amf_nrf_disc_request & ;;
+            3) make_amf_nrf_disc_request & ;;
         esac
 
         sleep "$interval" # Control the rate of requests
